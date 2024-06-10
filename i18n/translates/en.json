@@ -1,0 +1,8 @@
+{
+    "main.welcome_message": "Welcome to [%s] Server :)",
+    "main.current_timezone": "Current timezone: %s | %s",
+    "main.unique_device_code": "Unique device identifier:",
+    "main.web_service_listening": "Web service is listening on address %s.",
+
+    "module.user.init_database_successful": "User database initializes successfully"
+}

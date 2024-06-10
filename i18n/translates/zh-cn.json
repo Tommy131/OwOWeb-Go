@@ -1,0 +1,8 @@
+{
+    "main.welcome_message": "欢迎使用 [%s] 服务端 :)",
+    "main.current_timezone": "当前时区: %s | %s",
+    "main.unique_device_code": "当前设备唯一识别码:",
+    "main.web_service_listening": "Web服务已在地址 %s 上监听.",
+
+    "module.user.init_database_successful": "成功初始化用户数据库."
+}
