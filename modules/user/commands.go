@@ -20,6 +20,7 @@ package user
 import (
 	"database/sql"
 	"fmt"
+	"owoweb/cmd"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -106,4 +107,6 @@ func init() {
 	UserCmd.AddCommand(countCmd)
 	UserCmd.AddCommand(lastLoginCmd)
 	UserCmd.AddCommand(listCmd)
+
+	cmd.RootCmd.AddCommand(UserCmd)
 }

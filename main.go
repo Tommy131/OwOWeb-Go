@@ -10,7 +10,7 @@
  * @Date         : 2024-06-06 02:24:56
  * @Author       : HanskiJay
  * @LastEditors  : HanskiJay
- * @LastEditTime : 2024-06-10 01:35:39
+ * @LastEditTime : 2024-07-01 02:10:50
  * @E-Mail       : support@owoblog.com
  * @Telegram     : https://t.me/HanskiJay
  * @GitHub       : https://github.com/Tommy131
@@ -20,13 +20,14 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"os/signal"
 	"owoweb/cmd"
 	"owoweb/i18n"
-	"owoweb/modules/taskify"
 	"owoweb/modules/test"
 	"owoweb/modules/user"
+	"owoweb/routes"
 	"owoweb/utils"
 	"strings"
 	"syscall"
@@ -38,6 +39,7 @@ import (
 
 // 欢迎标题
 func init() {
+	utils.EnableVirtualTerminalProcessing()
 	name, _ := time.Now().Zone()
 
 	fmt.Println(strings.Repeat("-", 50))
@@ -51,7 +53,10 @@ func init() {
 
 // 主函数
 func main() {
-	registerCommands()
+	config, err := utils.LoadConfig()
+	if err != nil {
+		log.Fatalf("Failed to load config: %v", err)
+	}
 
 	if len(os.Args) > 1 {
 		cmd.Execute()
@@ -63,7 +68,7 @@ func main() {
 	done := make(chan bool, 1)
 
 	go func() {
-		runWebServer()
+		runWebServer(config.WebListeningAddress)
 	}()
 	fmt.Println(i18n.Lpk.FormatMessage("main.web_service_listening", aurora.BrightYellow(utils.CreateClickableLink("http://"+utils.WEB_ADDRESS))))
 
@@ -106,22 +111,19 @@ func main() {
 	}
 }
 
-// 注册指令
-func registerCommands() {
-	cmd.RootCmd.AddCommand(user.UserCmd)
-}
-
 // 启动Web服务
-func runWebServer() {
+func runWebServer(address string) {
 	router := gin.Default()
-	router.Static("/static", "./static")
-	router.LoadHTMLFiles("static/index.html")
+	router.Static("/static", utils.STORAGE_PATH+"static")
+	router.LoadHTMLFiles(utils.STORAGE_PATH + "static/index.html")
 
 	// 注册各个模块的路由
-	taskify.SetupRoutes(router)
 	test.SetupRoutes(router)
 	user.SetupRoutes(router)
 
+	// 注册自定义路由
+	routes.RegisterRouters(router)
+
 	// 启动Web服务
-	router.Run(utils.WEB_ADDRESS)
+	router.Run(address)
 }
