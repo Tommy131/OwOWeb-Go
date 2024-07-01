@@ -48,7 +48,9 @@ func init() {
 	fmt.Println(i18n.Lpk.GetTranslate("main.unique_device_code"), aurora.Bold(aurora.BrightCyan(utils.GetUniqueDeviceCode())))
 	fmt.Println(strings.Repeat("-", 50))
 
-	// gin.SetMode(gin.ReleaseMode)
+	if utils.DEBUG_MODE != true {
+		gin.SetMode(gin.ReleaseMode)
+	}
 }
 
 // 主函数

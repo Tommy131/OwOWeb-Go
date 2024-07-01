@@ -18,7 +18,10 @@
 package utils
 
 // OwOWeb版本号
-const BUILD_VERSION string = "20240608"
+const BUILD_VERSION string = "20240701"
+
+// DEBUG模式
+const DEBUG_MODE bool = true
 
 // Web服务监听地址
 const WEB_ADDRESS string = "127.0.0.1:8080"
