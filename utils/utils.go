@@ -24,10 +24,13 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"os/exec"
 	"runtime"
 	"strings"
+	"syscall"
 	"time"
+	"unsafe"
 
 	"github.com/logrusorgru/aurora"
 )
@@ -117,6 +120,23 @@ func OpenBrowser(url string) {
 func CreateClickableLink(url string) string {
 	// ANSI escape codes for creating hyperlinks
 	return fmt.Sprintf("\033]8;;%s\033\\%s\033]8;;\033\\", url, url)
+}
+
+// 启用在Windows环境下的ANSI
+func EnableVirtualTerminalProcessing() {
+	if runtime.GOOS == "windows" {
+		const ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004
+
+		var kernel32 = syscall.NewLazyDLL("kernel32.dll")
+		var procGetConsoleMode = kernel32.NewProc("GetConsoleMode")
+		var procSetConsoleMode = kernel32.NewProc("SetConsoleMode")
+
+		var mode uint32
+		handle := syscall.Handle(os.Stdout.Fd())
+		procGetConsoleMode.Call(uintptr(handle), uintptr(unsafe.Pointer(&mode)))
+		mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING
+		procSetConsoleMode.Call(uintptr(handle), uintptr(mode))
+	}
 }
 
 // 获取随机颜色
