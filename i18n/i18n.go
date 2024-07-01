@@ -1,10 +1,29 @@
+/*
+ *        _____   _          __  _____   _____   _       _____   _____
+ *      /  _  \ | |        / / /  _  \ |  _  \ | |     /  _  \ /  ___|
+ *      | | | | | |  __   / /  | | | | | |_| | | |     | | | | | |
+ *      | | | | | | /  | / /   | | | | |  _  { | |     | | | | | |   _
+ *      | |_| | | |/   |/ /    | |_| | | |_| | | |___  | |_| | | |_| |
+ *      \_____/ |___/|___/     \_____/ |_____/ |_____| \_____/ \_____/
+ *
+ *  Copyright (c) 2023 by OwOTeam-DGMT (OwOBlog).
+ * @Date         : 2024-06-11 14:31:27
+ * @Author       : HanskiJay
+ * @LastEditors  : HanskiJay
+ * @LastEditTime : 2024-07-01 01:52:51
+ * @E-Mail       : support@owoblog.com
+ * @Telegram     : https://t.me/HanskiJay
+ * @GitHub       : https://github.com/Tommy131
+ */
 package i18n
 
 import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"os"
+	"owoweb/utils"
 	"path/filepath"
 )
 
@@ -26,13 +45,18 @@ func New() *LanguagePack {
 
 func init() {
 	Lpk = New()
-	err := Lpk.LoadAllLangs("i18n/translates")
+	err := Lpk.LoadAllLangs(utils.STORAGE_PATH + "translates")
 	if err != nil {
 		fmt.Println("Error loading language packs:", err)
 		return
 	}
 
-	err = Lpk.SelectLang("en")
+	config, err := utils.LoadConfig()
+	if err != nil {
+		log.Fatalf("Failed to load config: %v", err)
+	}
+
+	err = Lpk.SelectLang(config.TranslateLanguagePack)
 	if err != nil {
 		fmt.Println(err)
 		return

@@ -10,7 +10,7 @@
  * @Date         : 2024-06-09 23:29:04
  * @Author       : HanskiJay
  * @LastEditors  : HanskiJay
- * @LastEditTime : 2024-06-10 00:29:17
+ * @LastEditTime : 2024-06-11 14:15:07
  * @E-Mail       : support@owoblog.com
  * @Telegram     : https://t.me/HanskiJay
  * @GitHub       : https://github.com/Tommy131
@@ -22,6 +22,7 @@ import (
 	"fmt"
 	"log"
 	"owoweb/i18n"
+	"owoweb/utils"
 
 	_ "modernc.org/sqlite"
 )
@@ -30,7 +31,7 @@ var UserDb *sql.DB
 
 func init() {
 	var err error
-	UserDb, err = sql.Open("sqlite", "./user_system.db")
+	UserDb, err = sql.Open("sqlite", utils.STORAGE_PATH+"user_system.db")
 	if err != nil {
 		log.Fatal(err)
 	}

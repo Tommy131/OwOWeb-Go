@@ -22,3 +22,6 @@ const BUILD_VERSION string = "20240608"
 
 // Web服务监听地址
 const WEB_ADDRESS string = "127.0.0.1:8080"
+
+// 资源文件存储路径
+const STORAGE_PATH string = "./resources/"
