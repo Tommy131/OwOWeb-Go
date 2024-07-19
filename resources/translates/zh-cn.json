@@ -3,6 +3,8 @@
     "main.current_timezone": "当前时区: %s | %s",
     "main.unique_device_code": "当前设备唯一识别码:",
     "main.web_service_listening": "Web服务已在地址 %s 上监听.",
+    "main.forcibly_stopped_terminal": "收到强制停止信号, 正在停止OwOWeb相关服务......",
+    "main.stopping_terminal": "正在停止OwOWeb相关服务......",
 
     "module.user.init_database_successful": "成功初始化用户数据库."
 }

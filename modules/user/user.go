@@ -19,11 +19,10 @@ package user
 
 import (
 	"database/sql"
-	"fmt"
-	"log"
 	"owoweb/i18n"
 	"owoweb/utils"
 
+	log "github.com/sirupsen/logrus"
 	_ "modernc.org/sqlite"
 )
 
@@ -52,6 +51,6 @@ func init() {
 	if err := UserDb.Ping(); err != nil {
 		log.Fatalf("Failed to connect UserModule's Database: %v", err)
 	} else {
-		fmt.Println(i18n.Lpk.GetTranslate("module.user.init_database_successful"))
+		log.Info(i18n.Lpk.GetTranslate("module.user.init_database_successful"))
 	}
 }

@@ -17,14 +17,17 @@
  */
 package utils
 
-// OwOWeb版本号
+// BUILD_VERSION OwOWeb版本号
 const BUILD_VERSION string = "20240701"
 
-// DEBUG模式
+// DEBUG_MODE DEBUG模式
 const DEBUG_MODE bool = true
 
-// Web服务监听地址
+// WEB_ADDRESS Web服务监听地址
 const WEB_ADDRESS string = "127.0.0.1:8080"
 
-// 资源文件存储路径
+// STORAGE_PATH 资源文件存储路径
 const STORAGE_PATH string = "./resources/"
+
+// LOG_PATH 日志记录文件存储路径
+const LOG_PATH string = STORAGE_PATH + "logs/"

@@ -3,6 +3,8 @@
     "main.current_timezone": "Current timezone: %s | %s",
     "main.unique_device_code": "Unique device identifier:",
     "main.web_service_listening": "Web service is listening on address %s.",
+    "main.forcibly_stopped_terminal": "Received a forced stop signal, stopping OwOWeb-related services...",
+    "main.stopping_terminal": "Stopping OwOWeb-related services...",
 
     "module.user.init_database_successful": "User database initializes successfully"
 }
