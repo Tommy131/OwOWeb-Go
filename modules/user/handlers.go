@@ -10,7 +10,7 @@
  * @Date         : 2024-06-06 02:24:56
  * @Author       : HanskiJay
  * @LastEditors  : HanskiJay
- * @LastEditTime : 2024-06-10 00:22:09
+ * @LastEditTime : 2024-07-19 12:36:31
  * @E-Mail       : support@owoblog.com
  * @Telegram     : https://t.me/HanskiJay
  * @GitHub       : https://github.com/Tommy131
@@ -33,23 +33,23 @@ func RegisterHandler() gin.HandlerFunc {
 			Email    string `json:"email"`
 		}
 		if err := c.BindJSON(&req); err != nil {
-			utils.RespondJSONWithError(c, http.StatusBadRequest, "Invalid request")
+			c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid request"})
 			return
 		}
 
 		encryptedPassword, err := utils.EncryptPassword(req.Password)
 		if err != nil {
-			utils.RespondJSONWithError(c, http.StatusInternalServerError, "Encryption error")
+			c.JSON(http.StatusInternalServerError, gin.H{"message": "Encryption error"})
 			return
 		}
 
 		_, err = UserDb.Exec("INSERT INTO users (username, password, email) VALUES (?, ?, ?)", req.Username, encryptedPassword, req.Email)
 		if err != nil {
-			utils.RespondJSONWithError(c, http.StatusInternalServerError, "Database error: "+err.Error())
+			c.JSON(http.StatusInternalServerError, gin.H{"message": "Database error: " + err.Error()})
 			return
 		}
 
-		utils.RespondJSONWithSuccess(c, http.StatusOK, "User registered successfully")
+		c.JSON(http.StatusOK, gin.H{"message": "User registered successfully"})
 	}
 }
 
@@ -60,7 +60,7 @@ func LoginHandler() gin.HandlerFunc {
 			Password string `json:"password"`
 		}
 		if err := c.BindJSON(&req); err != nil {
-			utils.RespondJSONWithError(c, http.StatusBadRequest, "Invalid request")
+			c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid request"})
 			return
 		}
 
@@ -68,26 +68,26 @@ func LoginHandler() gin.HandlerFunc {
 		err := UserDb.QueryRow("SELECT password FROM users WHERE username = ?", req.Username).Scan(&storedPassword)
 		if err != nil {
 			if err == sql.ErrNoRows {
-				utils.RespondJSONWithError(c, http.StatusUnauthorized, "User not found")
+				c.JSON(http.StatusUnauthorized, gin.H{"message": "User not found"})
 				return
 			}
-			utils.RespondJSONWithError(c, http.StatusInternalServerError, "Database error")
+			c.JSON(http.StatusInternalServerError, gin.H{"message": "Database error"})
 			return
 		}
 
 		if !utils.CheckPasswordHash(req.Password, storedPassword) {
-			utils.RespondJSONWithError(c, http.StatusUnauthorized, "Invalid password")
+			c.JSON(http.StatusUnauthorized, gin.H{"message": "Invalid password"})
 			return
 		}
 
 		// Update last login time
 		_, err = UserDb.Exec("UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE username = ?", req.Username)
 		if err != nil {
-			utils.RespondJSONWithError(c, http.StatusInternalServerError, "Failed to update last login time")
+			c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to update last login time"})
 			return
 		}
 
-		utils.RespondJSONWithSuccess(c, http.StatusOK, "Login successful")
+		c.JSON(http.StatusOK, gin.H{"message": "Login successful"})
 	}
 }
 
@@ -97,7 +97,7 @@ func RecoverHandler() gin.HandlerFunc {
 			Email string `json:"email"`
 		}
 		if err := c.BindJSON(&req); err != nil {
-			utils.RespondJSONWithError(c, http.StatusBadRequest, "Invalid request")
+			c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid request"})
 			return
 		}
 
@@ -105,17 +105,17 @@ func RecoverHandler() gin.HandlerFunc {
 		err := UserDb.QueryRow("SELECT username FROM users WHERE email = ?", req.Email).Scan(&username)
 		if err != nil {
 			if err == sql.ErrNoRows {
-				utils.RespondJSONWithError(c, http.StatusNotFound, "Email not found")
+				c.JSON(http.StatusNotFound, gin.H{"message": "Email not found"})
 				return
 			}
-			utils.RespondJSONWithError(c, http.StatusInternalServerError, "Database error")
+			c.JSON(http.StatusInternalServerError, gin.H{"message": "Database error"})
 			return
 		}
 
 		// Here you can add code to send a recovery email to the user.
 		// For simplicity, we'll just return a success message.
 
-		utils.RespondJSONWithSuccess(c, http.StatusOK, "Recovery email sent")
+		c.JSON(http.StatusOK, gin.H{"message": "Recovery email sent"})
 	}
 }
 
@@ -126,13 +126,13 @@ func VerifyHandler() gin.HandlerFunc {
 			Code  string `json:"code"`
 		}
 		if err := c.BindJSON(&req); err != nil {
-			utils.RespondJSONWithError(c, http.StatusBadRequest, "Invalid request")
+			c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid request"})
 			return
 		}
 
 		// Here you can add code to verify the email with the provided code.
 		// For simplicity, we'll just return a success message.
 
-		utils.RespondJSONWithSuccess(c, http.StatusOK, "Email verified")
+		c.JSON(http.StatusOK, gin.H{"message": "Email verified"})
 	}
 }

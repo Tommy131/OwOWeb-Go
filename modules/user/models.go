@@ -17,6 +17,7 @@
  */
 package user
 
+// User 用户结构
 type User struct {
 	ID       uint   `json:"id"`
 	Username string `json:"username"`
@@ -24,15 +25,18 @@ type User struct {
 	Email    string `json:"email"`
 }
 
+// LoginCredentials 登录凭证结构
 type LoginCredentials struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
+// RecoverPasswordRequest 找回密码结构
 type RecoverPasswordRequest struct {
 	Email string `json:"email"`
 }
 
+// VerifyEmailRequest 验证邮箱结构
 type VerifyEmailRequest struct {
 	Email string `json:"email"`
 	Code  string `json:"code"`

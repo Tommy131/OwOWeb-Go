@@ -10,7 +10,7 @@
  * @Date         : 2024-06-08 15:08:35
  * @Author       : HanskiJay
  * @LastEditors  : HanskiJay
- * @LastEditTime : 2024-06-10 00:35:24
+ * @LastEditTime : 2024-07-19 12:59:57
  * @E-Mail       : support@owoblog.com
  * @Telegram     : https://t.me/HanskiJay
  * @GitHub       : https://github.com/Tommy131
@@ -21,9 +21,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"log"
 	"math/rand"
-	"net/http"
 	"os"
 	"os/exec"
 	"runtime"
@@ -35,7 +33,7 @@ import (
 	"github.com/logrusorgru/aurora"
 )
 
-// 获取CPU序列号
+// GetCPUSerial 获取CPU序列号
 func GetCPUSerial() (string, error) {
 	var cmd *exec.Cmd
 	if runtime.GOOS == "windows" {
@@ -50,7 +48,7 @@ func GetCPUSerial() (string, error) {
 	return strings.TrimSpace(string(output)), nil
 }
 
-// 获取硬盘序列号
+// GetDiskSerial 获取硬盘序列号
 func GetDiskSerial() (string, error) {
 	var cmd *exec.Cmd
 	if runtime.GOOS == "windows" {
@@ -65,7 +63,7 @@ func GetDiskSerial() (string, error) {
 	return strings.TrimSpace(string(output)), nil
 }
 
-// 生成设备唯一识别码
+// generateDeviceCode 生成设备唯一识别码
 func generateDeviceCode() (string, error) {
 	cpuSerial, err := GetCPUSerial()
 	if err != nil {
@@ -82,16 +80,16 @@ func generateDeviceCode() (string, error) {
 	return hex.EncodeToString(hash[:]), nil
 }
 
-// 自动获取设备唯一识别码
+// GetUniqueDeviceCode 自动获取设备唯一识别码
 func GetUniqueDeviceCode() string {
 	deviceCode, err := generateDeviceCode()
 	if err != nil {
-		return "生成设备码时出错"
+		return "Error generating device code"
 	}
 	return deviceCode
 }
 
-// 打开外部URL
+// OpenBrowser 打开外部URL
 func OpenBrowser(url string) {
 	var cmd string
 	var args []string
@@ -116,13 +114,13 @@ func OpenBrowser(url string) {
 	}
 }
 
-// 创建一个可点击打开的外部链接
+// CreateClickableLink 创建一个可点击打开的外部链接
 func CreateClickableLink(url string) string {
 	// ANSI escape codes for creating hyperlinks
 	return fmt.Sprintf("\033]8;;%s\033\\%s\033]8;;\033\\", url, url)
 }
 
-// 启用在Windows环境下的ANSI
+// EnableVirtualTerminalProcessing 启用在Windows环境下的ANSI
 func EnableVirtualTerminalProcessing() {
 	if runtime.GOOS == "windows" {
 		const ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004
@@ -139,7 +137,7 @@ func EnableVirtualTerminalProcessing() {
 	}
 }
 
-// 获取随机颜色
+// GetRandomColor 获取随机颜色
 func GetRandomColor() aurora.Color {
 	colors := []aurora.Color{
 		aurora.RedFg,
@@ -152,7 +150,7 @@ func GetRandomColor() aurora.Color {
 	return colors[rand.Intn(len(colors))]
 }
 
-// 赋予字符串随机颜色
+// ColorfulString 赋予字符串随机颜色
 func ColorfulString(input string) string {
 	rand.Seed(time.Now().UnixNano())
 	var result string
@@ -163,22 +161,4 @@ func ColorfulString(input string) string {
 	}
 
 	return result
-}
-
-// Get client IP address
-func GetClientIP(r *http.Request) string {
-	forwardedFor := r.Header.Get("X-Forwarded-For")
-	if forwardedFor == "" {
-		return strings.Split(r.RemoteAddr, ":")[0]
-	}
-	ips := strings.Split(forwardedFor, ",")
-	return strings.TrimSpace(ips[0])
-}
-
-// Log request information middleware
-func LogRequest(handler http.Handler, logger *log.Logger) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		logger.Printf("[%s] %s %s %s", time.Now().Format("2006-01-02 15:04:05"), GetClientIP(r), r.Method, r.UserAgent())
-		handler.ServeHTTP(w, r)
-	})
 }
