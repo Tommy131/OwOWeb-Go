@@ -1,4 +1,4 @@
-# Taskify-GO
+# Taskify-Go
 
 [English Version](README.md)
 
@@ -12,8 +12,7 @@
 ## 使用方法
 
 1. 在任意目录下使用指令 `git clone https://github.com/Tommy131/OwOWeb-Go .`
-2. 进入 `modules` 文件夹, 使用指令 `git clone https://github.com/Tommy131/Taskify-Go taskify`
-3. 回到上级根目录, 使用指令 `go run main.go` 即可启动 `Taskify-Go`.
+2. 使用指令 `go run main.go` 即可启动 `Taskify-Go`.
 
 ## 项目声明
 

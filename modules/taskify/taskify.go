@@ -17,7 +17,13 @@
  */
 package taskify
 
+import log "github.com/sirupsen/logrus"
+
 const (
 	defaultUpdateMsg   = "Optimized UI overflow bug & New Logo designed"
 	defaultDownloadURL = "https://github.com/Tommy131/Taskify/releases"
 )
+
+func init() {
+	log.Info("Loaded Taskify Services.")
+}

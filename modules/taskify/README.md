@@ -1,4 +1,4 @@
-# Taskify-GO
+# Taskify-Go
 
 [中文版](README_CN.md)
 
@@ -12,10 +12,7 @@ This application is the backend of [Taskify-Flutter](https://github.com/Tommy131
 ## How to use
 
 1. Use the command `git clone https://github.com/Tommy131/OwOWeb-Go .` in any directory.
-
-2. Enter the `modules` folder and use the command `git clone https://github.com/Tommy131/Taskify-Go taskify`.
-
-3. Return to the parent root directory and use the command `go run main.go` to start `Taskify-Go`.
+2. Use the command `go run main.go` to start `Taskify-Go`.
 
 ## Project Statement
 
