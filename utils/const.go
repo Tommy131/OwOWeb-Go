@@ -31,3 +31,6 @@ const STORAGE_PATH string = "./resources/"
 
 // LOG_PATH 日志记录文件存储路径
 const LOG_PATH string = STORAGE_PATH + "logs/"
+
+// DATABASE_PATH 数据库存储路径
+const DATABASE_PATH string = STORAGE_PATH + "database/"

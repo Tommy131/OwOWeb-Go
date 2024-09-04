@@ -24,8 +24,6 @@ import (
 	"owoweb/a"
 	"owoweb/cmd"
 	"owoweb/i18n"
-	"owoweb/modules/test"
-	"owoweb/modules/user"
 	"owoweb/routes"
 	"owoweb/utils"
 	"strings"
@@ -76,11 +74,7 @@ func main() {
 func runWebServer(address string) {
 	router := gin.Default()
 	router.Static("/static", utils.STORAGE_PATH+"static")
-	router.LoadHTMLFiles(utils.STORAGE_PATH + "static/index.html")
-
-	// 注册各个模块的路由
-	test.SetupRoutes(router)
-	user.SetupRoutes(router)
+	router.LoadHTMLGlob(utils.STORAGE_PATH + "static/*.html")
 
 	// 注册自定义路由
 	routes.RegisterRouters(router)

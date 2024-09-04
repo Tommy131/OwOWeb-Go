@@ -1,4 +1,4 @@
 go.sum
-user_system.db
-url_shortener.db
+user_database.db
+owol_database.db
 owoweb.exe

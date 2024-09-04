@@ -18,11 +18,22 @@
 package routes
 
 import (
+	"owoweb/modules/owol"
+	"owoweb/modules/taskify"
+	"owoweb/modules/test"
+	"owoweb/modules/user"
+
 	"github.com/gin-gonic/gin"
 )
 
 // 注册路由
 func RegisterRouters(router *gin.Engine) {
+	// 注册各个模块的路由
+	test.SetupRoutes(router)
+	user.SetupRoutes(router)
+	taskify.SetupRoutes(router)
+	owol.SetupRoutes(router)
+
 	// an example
 	registerCustomRouters(router)
 }
