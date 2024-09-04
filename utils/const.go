@@ -18,7 +18,7 @@
 package utils
 
 // BUILD_VERSION OwOWeb版本号
-const BUILD_VERSION string = "20240701"
+const BUILD_VERSION string = "202400905"
 
 // DEBUG_MODE DEBUG模式
 const DEBUG_MODE bool = true

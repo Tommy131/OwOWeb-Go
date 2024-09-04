@@ -10,7 +10,7 @@
  * @Date         : 2024-06-09 23:29:04
  * @Author       : HanskiJay
  * @LastEditors  : HanskiJay
- * @LastEditTime : 2024-06-11 14:15:07
+ * @LastEditTime : 2024-09-05 00:27:47
  * @E-Mail       : support@owoblog.com
  * @Telegram     : https://t.me/HanskiJay
  * @GitHub       : https://github.com/Tommy131
@@ -30,7 +30,7 @@ var UserDb *sql.DB
 
 func init() {
 	var err error
-	UserDb, err = sql.Open("sqlite", utils.STORAGE_PATH+"user_system.db")
+	UserDb, err = sql.Open("sqlite", utils.DATABASE_PATH+"user_database.db")
 	if err != nil {
 		log.Fatal(err)
 	}
