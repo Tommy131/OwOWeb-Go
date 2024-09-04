@@ -10,7 +10,7 @@
  * @Date         : 2024-09-04 21:48:39
  * @Author       : HanskiJay
  * @LastEditors  : HanskiJay
- * @LastEditTime : 2024-09-04 22:23:15
+ * @LastEditTime : 2024-09-05 00:43:09
  * @E-Mail       : support@owoblog.com
  * @Telegram     : https://t.me/HanskiJay
  * @GitHub       : https://github.com/Tommy131
@@ -22,41 +22,20 @@ import (
 	"crypto/rand"
 	"database/sql"
 	"encoding/base64"
-	"fmt"
-	"os"
-	"owoweb/cmd"
-	"owoweb/modules/owol/commands"
 	"owoweb/utils"
 	"regexp"
 	"strings"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/spf13/cobra"
 	_ "modernc.org/sqlite"
 )
 
-var db *sql.DB
 var domain = "https://owol.cc/s/"
-
-var ShortLinkCmd = &cobra.Command{
-	Use:     "shortlink",
-	Aliases: []string{"s", "sl"},
-	Short:   "Shortlink CLI is used to manage URL shortening service",
-	Long:    "This CLI tool allows you to list, delete, and update short links in the URL shortening service.",
-}
-
-// 执行命令
-func Execute() {
-	if err := ShortLinkCmd.Execute(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-}
 
 // 初始化数据库
 func init() {
 	var err error
-	db, err = sql.Open("sqlite", utils.STORAGE_PATH+"url_shortener.db")
+	db, err = sql.Open("sqlite", utils.DATABASE_PATH+"owol_database.db")
 	if err != nil {
 		panic(err)
 	}
@@ -70,13 +49,6 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-
-	// 注册子命令
-	ShortLinkCmd.AddCommand(commands.ListCmd)
-	ShortLinkCmd.AddCommand(commands.DeleteCmd)
-	ShortLinkCmd.AddCommand(commands.UpdateCmd)
-
-	cmd.RootCmd.AddCommand(ShortLinkCmd)
 
 	log.Info("Loaded OwOLink Services.")
 }

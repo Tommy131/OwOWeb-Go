@@ -10,7 +10,7 @@
  * @Date         : 2024-06-06 02:54:05
  * @Author       : HanskiJay
  * @LastEditors  : HanskiJay
- * @LastEditTime : 2024-09-04 22:53:54
+ * @LastEditTime : 2024-09-05 00:42:24
  * @E-Mail       : support@owoblog.com
  * @Telegram     : https://t.me/HanskiJay
  * @GitHub       : https://github.com/Tommy131
@@ -130,7 +130,12 @@ func RedirectToOriginalURL(c *gin.Context) {
 	var originalURL string
 	err := db.QueryRow("SELECT original_url FROM url_map WHERE id = ?", id).Scan(&originalURL)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Short URL not found"})
+		if err == sql.ErrNoRows {
+			// 短链接ID不存在，返回自定义404页面
+			c.HTML(http.StatusNotFound, "owol-404.html", nil)
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to query the database"})
 		return
 	}
 
