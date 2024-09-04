@@ -52,6 +52,14 @@ The user system module handles user-related functionalities such as registration
 - Password Recovery: /user/recover
 - Email Verification: /user/verify
 
+### OwOLink-Go
+
+Check OwOLink-Go's [README.md](/owoweb/modules/owol/README.md).
+
+### Taskify-Go
+
+Check Taskify-Go's [README.md](/owoweb/modules/taskify/README.md).
+
 ## Statement
 
 &copy; 2016-2024 [`OwOBlog-DGMT`](https://www.owoblog.com). Please comply with the open source license of this project for modification, derivative or commercial use of this project.
