@@ -10,7 +10,7 @@
  * @Date         : 2024-07-19 14:20:15
  * @Author       : HanskiJay
  * @LastEditors  : HanskiJay
- * @LastEditTime : 2024-07-19 17:38:10
+ * @LastEditTime : 2024-09-04 23:32:05
  * @E-Mail       : support@owoblog.com
  * @Telegram     : https://t.me/HanskiJay
  * @GitHub       : https://github.com/Tommy131
@@ -56,6 +56,8 @@ func (cl *CustomLogger) Write(p []byte) (n int, err error) {
 }
 
 func init() {
+	// 在Windows下启用ANSI
+	utils.EnableVirtualTerminalProcessing()
 	// 设置日志输出文件
 	logger := &CustomLogger{
 		Logger: &lumberjack.Logger{

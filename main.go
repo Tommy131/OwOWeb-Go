@@ -41,8 +41,6 @@ func main() {
 	// 激活头部包
 	a.DoNothing()
 
-	utils.EnableVirtualTerminalProcessing()
-
 	if !utils.DEBUG_MODE {
 		gin.SetMode(gin.ReleaseMode)
 	}
