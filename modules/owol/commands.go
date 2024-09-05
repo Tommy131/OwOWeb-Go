@@ -81,24 +81,24 @@ var listCmd = &cobra.Command{
 	Long:  "This command lists all short links and their corresponding original URLs.",
 	Run: func(cmd *cobra.Command, args []string) {
 		// 查询所有数据
-		rows, err := db.Query("SELECT id, original_url FROM url_map")
+		rows, err := db.Query("SELECT id, original_url, created_at FROM url_map")
 		if err != nil {
 			fmt.Println("Failed to query the database:", err)
 			return
 		}
 		defer rows.Close()
 
-		fmt.Println("Short Link ID | Original URL")
-		fmt.Println("--------------------------------------")
+		fmt.Println("Short Link ID | Created At | Original URL")
+		fmt.Println("---------------------------------------------")
 
 		// 打印所有短链接数据
 		for rows.Next() {
-			var id, originalURL string
-			if err := rows.Scan(&id, &originalURL); err != nil {
+			var id, originalURL, createdAt string
+			if err := rows.Scan(&id, &originalURL, &createdAt); err != nil {
 				fmt.Println("Error reading data:", err)
 				return
 			}
-			fmt.Printf("%s | %s\n", id, originalURL)
+			fmt.Printf("%s | %s | %s\n", id, createdAt, originalURL)
 		}
 	},
 }

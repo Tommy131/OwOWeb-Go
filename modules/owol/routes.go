@@ -10,7 +10,7 @@
  * @Date         : 2024-06-06 02:24:56
  * @Author       : HanskiJay
  * @LastEditors  : HanskiJay
- * @LastEditTime : 2024-09-04 20:23:04
+ * @LastEditTime : 2024-09-05 16:28:57
  * @E-Mail       : support@owoblog.com
  * @Telegram     : https://t.me/HanskiJay
  * @GitHub       : https://github.com/Tommy131
@@ -38,7 +38,15 @@ func SetupRoutes(router *gin.Engine) {
 
 	globalGroup := router.Group("/s")
 	{
+		// 短链接分享ID识别
 		globalGroup.GET("/:id", RedirectToOriginalURL)
-		globalGroup.POST("/api/url-check", UrlCheck)
+	}
+
+	globalApiGroup := router.Group("/api/owol")
+	{
+		// 检查URL可用性并且返回缩短地址
+		globalApiGroup.POST("/url-check", UrlCheck)
+		// IP统计
+		globalApiGroup.GET("/visit-stats", VisitStats)
 	}
 }

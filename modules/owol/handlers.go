@@ -10,7 +10,7 @@
  * @Date         : 2024-06-06 02:54:05
  * @Author       : HanskiJay
  * @LastEditors  : HanskiJay
- * @LastEditTime : 2024-09-05 00:42:24
+ * @LastEditTime : 2024-09-05 17:01:40
  * @E-Mail       : support@owoblog.com
  * @Telegram     : https://t.me/HanskiJay
  * @GitHub       : https://github.com/Tommy131
@@ -48,7 +48,7 @@ func UrlCheck(c *gin.Context) {
 
 	// 如果已经存在该URL，直接返回对应的短链ID
 	if existingID != "" {
-		shortURL := fmt.Sprintf(domain+"%s", existingID)
+		shortURL := fmt.Sprintf(shareDomain+"%s", existingID)
 		c.JSON(http.StatusOK, gin.H{
 			"result":    true,
 			"short_url": shortURL,
@@ -62,6 +62,12 @@ func UrlCheck(c *gin.Context) {
 			"result": false,
 			"error":  "Invalid URL format",
 		})
+		return
+	}
+
+	// 进行域名检查
+	if isForbiddenURL(urlRequest.URL) {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "URL is not allowed"})
 		return
 	}
 
@@ -115,7 +121,7 @@ func UrlCheck(c *gin.Context) {
 	}
 
 	// 返回短链
-	shortURL := fmt.Sprintf(domain+"%s", shortID)
+	shortURL := fmt.Sprintf(shareDomain+"%s", shortID)
 	c.JSON(http.StatusOK, gin.H{
 		"result":    true,
 		"short_url": shortURL,
@@ -141,4 +147,16 @@ func RedirectToOriginalURL(c *gin.Context) {
 
 	// 重定向到原始URL
 	c.Redirect(http.StatusMovedPermanently, originalURL)
+}
+
+// 记录独立IP请求并返回全站访问次数
+func VisitStats(c *gin.Context) {
+	ip := c.ClientIP()
+	updateVisitCount(ip)
+	totalVisits, err := getTotalVisits()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get total visits"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"totalVisits": totalVisits})
 }
