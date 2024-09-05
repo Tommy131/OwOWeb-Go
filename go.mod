@@ -10,6 +10,8 @@ require (
 	github.com/spf13/cobra v1.8.0
 	golang.org/x/crypto v0.22.0
 	golang.org/x/term v0.19.0
+	gorm.io/driver/sqlite v1.5.6
+	gorm.io/gorm v1.25.11
 	modernc.org/sqlite v1.30.0
 )
 
@@ -29,8 +31,6 @@ require (
 	golang.org/x/arch v0.7.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	gorm.io/driver/sqlite v1.5.6 // indirect
-	gorm.io/gorm v1.25.11 // indirect
 )
 
 require (
