@@ -1,4 +1,5 @@
 go.sum
-user_database.db
-owol_database.db
 owoweb.exe
+ocsp_database.db
+owol_database.db
+user_database.db
