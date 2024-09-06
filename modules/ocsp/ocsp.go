@@ -10,7 +10,7 @@
  * @Date         : 2024-06-06 02:24:56
  * @Author       : HanskiJay
  * @LastEditors  : HanskiJay
- * @LastEditTime : 2024-09-06 01:02:51
+ * @LastEditTime : 2024-09-06 21:56:31
  * @E-Mail       : support@owoblog.com
  * @Telegram     : https://t.me/HanskiJay
  * @GitHub       : https://github.com/Tommy131
@@ -115,6 +115,8 @@ func init() {
 
 	// 初始化数据库
 	SetupDatabase(utils.DATABASE_PATH + "ocsp_database.db")
+	// 检查证书吊销状态
+	CheckCRL()
 
 	log.Println("Loaded OCSP Services.")
 }
@@ -221,6 +223,20 @@ func LoadCRL(filename string) (*x509.RevocationList, error) {
 		return nil, err
 	}
 	return crl, nil
+}
+
+// CheckCRL get information of Certificate Revoke List
+func CheckCRL() {
+	// 输出 CRL 签发者信息
+	log.Infof("Issuer: %v", crl.Issuer)
+
+	// 输出吊销的证书数量
+	log.Infof("Amount of revoked Certificates: %d", len(crl.RevokedCertificateEntries))
+
+	// 列出吊销的证书信息
+	for _, revokedCert := range crl.RevokedCertificateEntries {
+		log.Infof("Revoked Serial Number: %v, Revoked Time: %v", revokedCert.SerialNumber, revokedCert.RevocationTime)
+	}
 }
 
 // IsCertificateRevoked checks if the certificate is revoked based on the CRL
