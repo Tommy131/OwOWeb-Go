@@ -10,7 +10,7 @@
  * @Date         : 2024-06-08 12:28:02
  * @Author       : HanskiJay
  * @LastEditors  : HanskiJay
- * @LastEditTime : 2024-06-09 23:35:35
+ * @LastEditTime : 2024-09-30 19:03:31
  * @E-Mail       : support@owoblog.com
  * @Telegram     : https://t.me/HanskiJay
  * @GitHub       : https://github.com/Tommy131
@@ -39,7 +39,7 @@ var countCmd = &cobra.Command{
 	Short: "Get the count of registered users",
 	Run: func(cmd *cobra.Command, args []string) {
 		var count int
-		err := UserDb.QueryRow("SELECT COUNT(*) FROM users").Scan(&count)
+		err := db.Exec("SELECT COUNT(*) FROM users").Scan(&count)
 		if err != nil {
 			fmt.Printf("Failed to count users: %v\n", err)
 			return
@@ -58,9 +58,9 @@ var lastLoginCmd = &cobra.Command{
 		}
 		username := args[0]
 		var lastLogin string
-		err := UserDb.QueryRow("SELECT last_login FROM users WHERE username = ?", username).Scan(&lastLogin)
+		err := db.Exec("SELECT last_login FROM users WHERE username = ?", username).Scan(&lastLogin)
 		if err != nil {
-			if err == sql.ErrNoRows {
+			if err.Error == sql.ErrNoRows {
 				fmt.Println("User not found")
 				return
 			}
@@ -75,30 +75,26 @@ var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List all users with detailed information",
 	Run: func(cmd *cobra.Command, args []string) {
-		rows, err := UserDb.Query("SELECT id, username, email, last_login FROM users")
-		if err != nil {
-			fmt.Printf("Failed to list users: %v\n", err)
+		var users []User
+		result := db.Select("id, username, email, last_login_at").Find(&users)
+		if result.Error != nil {
+			fmt.Printf("Failed to list users: %v\n", result.Error)
 			return
 		}
-		defer rows.Close()
 
+		// 打印表头
 		fmt.Println(strings.Repeat("-", 80))
 		fmt.Printf("%-5s %-20s %-30s %-25s\n", "ID", "Username", "Email", "Last Login")
 		fmt.Println(strings.Repeat("-", 80))
 
-		for rows.Next() {
-			var id int
-			var username, email, lastLogin string
-			err := rows.Scan(&id, &username, &email, &lastLogin)
-			if err != nil {
-				fmt.Printf("Failed to scan row: %v\n", err)
-				continue
-			}
-			fmt.Printf("%-5d %-20s %-30s %-20s\n", id, username, email, lastLogin)
+		// 打印每个用户的信息
+		for _, user := range users {
+			fmt.Printf("%-5d %-20s %-30s %-20s\n", user.ID, user.Username, user.Email, user.LastLoginAt.Format("2006-01-02 15:04:05"))
 		}
 
-		if err := rows.Err(); err != nil {
-			fmt.Printf("Error occurred during row iteration: %v\n", err)
+		// 检查迭代中的错误
+		if result.Error != nil {
+			fmt.Printf("Error occurred during row iteration: %v\n", result.Error)
 		}
 	},
 }
