@@ -21,7 +21,7 @@ package utils
 const BUILD_VERSION string = "202400905"
 
 // DEBUG_MODE DEBUG模式
-const DEBUG_MODE bool = true
+const DEBUG_MODE bool = false
 
 // WEB_ADDRESS Web服务监听地址
 const WEB_ADDRESS string = "127.0.0.1:8080"

@@ -29,7 +29,7 @@ func SetupRoutes(router *gin.Engine) {
 	// 配置 CORS 允许前端跨域请求
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000"},            // 允许来自 http://localhost:3000 的请求
-		AllowMethods:     []string{"POST", "GET", "POST", "OPTIONS"},   // 允许的 HTTP 方法
+		AllowMethods:     []string{"POST", "GET", "OPTIONS"},           // 允许的 HTTP 方法
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"}, // 允许的请求头
 		ExposeHeaders:    []string{"Content-Length"},                   // 可以暴露的头
 		AllowCredentials: true,                                         // 允许带凭证请求

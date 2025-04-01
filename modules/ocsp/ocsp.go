@@ -10,7 +10,7 @@
  * @Date         : 2024-06-06 02:24:56
  * @Author       : HanskiJay
  * @LastEditors  : HanskiJay
- * @LastEditTime : 2024-09-06 21:56:31
+ * @LastEditTime : 2025-04-01 19:10:13
  * @E-Mail       : support@owoblog.com
  * @Telegram     : https://t.me/HanskiJay
  * @GitHub       : https://github.com/Tommy131
@@ -35,6 +35,15 @@ import (
 	"golang.org/x/crypto/ocsp"
 	"golang.org/x/term"
 )
+
+// 使用一个结构体存储所有文件路径
+type CertPaths struct {
+	CACertFile   string
+	CAKeyFile    string
+	UserCertFile string
+	UserKeyFile  string
+	CRLFile      string
+}
 
 // 定义常量
 const (
@@ -81,34 +90,38 @@ var userKey crypto.Signer
 var crl *x509.RevocationList
 
 func init() {
-	caCertFile := utils.STORAGE_PATH + "ocsp/OwOTeam_Root_CA_chain.crt"
-	caKeyFile := utils.STORAGE_PATH + "ocsp/OwOTeam_Root_CA_key.key"
-	userCertFile := utils.STORAGE_PATH + "ocsp/owoserver.com_chain.crt"
-	userKeyFile := utils.STORAGE_PATH + "ocsp/owoserver.com_key.key"
-	crlFile := utils.STORAGE_PATH + "ocsp/rootca.crl"
+	// 定义文件夹路径常量
+	const ocspPath = utils.STORAGE_PATH + "ocsp/"
+	var certPaths = CertPaths{
+		CACertFile:   ocspPath + "OwOTeam_Root_CA.crt",
+		CAKeyFile:    ocspPath + "OwOTeam_Root_CA.key",
+		UserCertFile: ocspPath + "owoserver.com.crt",
+		UserKeyFile:  ocspPath + "owoserver.com.key",
+		CRLFile:      ocspPath + "rootca.crl",
+	}
 
 	var err error
-	caCert, err = LoadCertificate(caCertFile)
+	caCert, err = LoadCertificate(certPaths.CACertFile)
 	if err != nil {
 		log.Fatalf("Failed to load CA certificate: %v", err)
 	}
 
-	caKey, err = LoadKey(caKeyFile)
+	caKey, err = LoadKey(certPaths.CAKeyFile)
 	if err != nil {
 		log.Fatalf("Failed to load CA key: %v", err)
 	}
 
-	userCert, err = LoadCertificate(userCertFile)
+	userCert, err = LoadCertificate(certPaths.UserCertFile)
 	if err != nil {
 		log.Fatalf("Failed to load user certificate: %v", err)
 	}
 
-	userKey, err = LoadKey(userKeyFile)
+	userKey, err = LoadKey(certPaths.UserKeyFile)
 	if err != nil {
 		log.Fatalf("Failed to load user key: %v", err)
 	}
 
-	crl, err = LoadCRL(crlFile)
+	crl, err = LoadCRL(certPaths.CRLFile)
 	if err != nil {
 		log.Fatalf("Failed to load CRL: %v", err)
 	}

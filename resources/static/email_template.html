@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Subject}}</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            font-family: Arial, sans-serif;
+        }
+        .email-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px;
+        }
+        .email-content {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            padding: 40px;
+            text-align: center;
+            color: #333;
+        }
+        .email-header {
+            background-color: #007BFF;
+            color: white;
+            padding: 20px 0;
+            border-radius: 8px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .email-body {
+            padding: 20px 0;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        .email-body p {
+            margin: 10px 0;
+        }
+        .verification-button {
+            background-color: #007BFF;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        .verification-button:hover {
+            background-color: #0056b3;
+        }
+        .email-footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #666;
+        }
+        .email-footer p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-content">
+            <div class="email-header">
+                {{.Subject}}
+            </div>
+            <div class="email-body">
+                <p>Hello {{.Name}},</p>
+                <p>{{.Body}}</p>
+                <a href="{{.VerificationLink}}" class="verification-button">Click Me</a>
+                <p>If you didn’t request this, please ignore this email.</p>
+            </div>
+            <div class="email-footer">
+                <p>Best Regards,</p>
+                <p>OwOTeam</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
